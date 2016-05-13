@@ -10,4 +10,5 @@ public interface CommentMapper {
 	List<CommentDto> getComments();
 	void deleteComment(int id);
 	void deleteMessageComment(int id);
+	CommentDto getComment();
 }

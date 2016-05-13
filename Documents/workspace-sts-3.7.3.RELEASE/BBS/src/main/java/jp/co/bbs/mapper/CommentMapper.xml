@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="jp.co.bbs.mapper.CommentMapper"> 
-	<resultMap id="CommentResult" type="jp.co.bbs.entity.Comment">
+	<resultMap id="CommentResult" type="jp.co.bbs.dto.CommentDto">
 		<result column="id" property="id" />
 		<result column="user_id" property="userId" />
 		<result column="message_id" property="messageId" />
@@ -31,4 +31,7 @@
 	<delete id="deleteMessageComment" parameterType="int">
 		delete from comments where message_id = #{id}
 	</delete>
+	<select id="getComment" resultMap="CommentResult">
+		select * from comments order by id desc limit 1
+	</select>
 </mapper>

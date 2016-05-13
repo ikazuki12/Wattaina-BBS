@@ -1,7 +1,9 @@
 package jp.co.bbs.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -12,6 +14,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jp.co.bbs.dto.BranchDto;
 import jp.co.bbs.dto.PositionDto;
@@ -32,7 +38,20 @@ public class SettingsController {
 	private PositionService positionService;
 	
 	@RequestMapping(value = "/settings", method = RequestMethod.GET)
-	public String getUser(Model model, @RequestParam("user_id") int id){
+	@ResponseBody
+	public String[] getUser(
+			Model model,
+			@RequestParam(value = "requestJs", required = false) String requestJs){
+		Integer id = null;
+		Map<String, String> userMap = new HashMap<String, String>();
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			userMap = mapper.readValue(requestJs, new TypeReference<HashMap<String,String>>() {});
+			id = Integer.parseInt(userMap.get("id"));
+			 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		UserDto user = userService.getSelectUser(id);
 		model.addAttribute("user", user);
 		List<BranchDto> branches = branchService.getBranch();
@@ -41,7 +60,17 @@ public class SettingsController {
 	    model.addAttribute("userForm", form);
 	    model.addAttribute("branches", branches);
 	    model.addAttribute("positions", positions);
-	    return "settings";
+	    String userId = String.valueOf(user.getId());
+	    String branchId = String.valueOf(user.getBranchId());
+	    String positionId = String.valueOf(user.getPositionId());
+	    String[] datas = {
+	    		userId,
+	    		user.getLoginId(), 
+	    		user.getName(),
+	    		branchId,
+	    		positionId
+	    		};
+	    return datas;
 	}
 	
 	@RequestMapping(value = "/settings", method = RequestMethod.POST)
@@ -56,7 +85,7 @@ public class SettingsController {
 			return "redirect:/control/";
 		} else {
 			session.setAttribute("errorMessages", messages);
-			return "redirect:/settings?user_id=" + user.getId();
+			return "redirect:/control/";
 		}
 	}
 	

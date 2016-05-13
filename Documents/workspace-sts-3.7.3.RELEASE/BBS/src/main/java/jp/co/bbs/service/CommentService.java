@@ -33,4 +33,9 @@ public class CommentService {
 	public void deleteMessageComment(int id) {
 		commentMapper.deleteMessageComment(id);
 	}
+	
+	public CommentDto getComment() {
+		CommentDto ret = commentMapper.getComment();
+		return ret;
+	}
 }

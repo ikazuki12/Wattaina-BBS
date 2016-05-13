@@ -10,6 +10,14 @@
 </head>
 <body>
 <a href="../control/">戻る</a>
+<c:if test="${ not empty errorMessages }">
+	<ul>
+		<c:forEach items="${ errorMessages }" var="message">
+			<li><span><c:out value="${message}" /></span></li>
+		</c:forEach>
+	</ul>
+	<c:remove var="errorMessages" scope="session" />
+</c:if>
 <form:form modelAttribute="userForm">
 ログインID
 <form:input path="loginId" /><br/>

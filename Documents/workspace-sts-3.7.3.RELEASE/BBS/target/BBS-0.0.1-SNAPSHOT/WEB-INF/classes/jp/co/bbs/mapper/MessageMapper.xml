@@ -12,7 +12,8 @@
 	</resultMap>
 	<select id="getMessage" resultMap="MessageResult">
     	select *
-    	from messages;	
+    	from messages
+    	order by insert_date desc	
 	</select>
 	<insert id="messageInsert" parameterType="jp.co.bbs.dto.MessageDto">
 		insert into messages (
@@ -30,4 +31,38 @@
 		)
 		
 	</insert>
+	<select id="getSelectMessageCategory" resultMap="MessageResult" parameterType="String">
+		select * from messages where
+		category = #{category}
+		order by insert_date desc
+	</select>
+	<select id="getSelectMessage" resultMap="MessageResult" parameterType="String">
+		select * from messages where
+		category = #{category}
+		and insert_date >= #{startDate}
+		order by insert_date desc
+	</select>
+	<select id="getSelectMessagePeriod" resultMap="MessageResult" parameterType="String">
+		select * from messages where
+		category = #{category}
+		and date(insert_date) between #{startDate} and #{endDate} 
+		order by insert_date desc
+	</select>
+	<select id="getSelectMessageNullCategory" resultMap="MessageResult" parameterType="String">
+		select * from messages where
+		insert_date >= #{startDate}
+		order by insert_date desc
+	</select>
+	<select id="getSelectMessagePeriodNullCategory" resultMap="MessageResult" parameterType="String">
+		select * from messages where date(insert_date)
+		between #{startDate} and #{endDate} order by insert_date desc
+	</select>
+	<select id="getSelectMessageEndDateNullCategory" resultMap="MessageResult" parameterType="String">
+		select * from messages where
+		insert_date &lt;= #{endDate}
+		order by insert_date desc
+	</select>
+	<delete id="deleteMessage" parameterType="jp.co.bbs.dto.MessageDto">
+		delete from messages where id = #{id}
+	</delete>
 </mapper>

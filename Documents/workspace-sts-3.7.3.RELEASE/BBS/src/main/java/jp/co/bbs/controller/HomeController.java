@@ -53,6 +53,8 @@ public class HomeController {
 		model.addAttribute("messageForm", messageForm);
 		CommentForm commentForm = new CommentForm();
 		model.addAttribute("commentForm", commentForm);
+		int messageSize = messages.size();
+		model.addAttribute("messageSize", messageSize);
 		if (category != null){
 			if (category.equals("all")){
 				category = null;

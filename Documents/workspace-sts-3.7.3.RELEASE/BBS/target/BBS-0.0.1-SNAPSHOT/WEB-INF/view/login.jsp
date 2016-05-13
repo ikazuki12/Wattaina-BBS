@@ -9,8 +9,16 @@
 <title>ログイン</title>
 </head>
 <body>
+<c:if test="${ not empty errorMessages }">
+	<ul>
+		<c:forEach items="${ errorMessages }" var="message">
+			<li><span><c:out value="${message}" /></span></li>
+		</c:forEach>
+	</ul>
+	<c:remove var="errorMessages" scope="session" />
+</c:if>
 <form:form modelAttribute="userForm">
-ログインID<form:input path="loginId" value="${loginUser.loginId}"/><br/>
+ログインID<form:input path="loginId" value="${userForm.loginId}"/><br/>
 パスワード<form:password path="password"/><br />
 <input type="submit" value="登録">
 </form:form>

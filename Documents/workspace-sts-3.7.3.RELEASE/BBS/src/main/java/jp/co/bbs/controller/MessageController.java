@@ -36,10 +36,10 @@ public class MessageController {
 	public String messageInsert(@ModelAttribute MessageForm form, HttpSession session, Model model) throws ParseException {
 		UserDto loginUser = (UserDto) session.getAttribute("loginUser");
 		List<String> messages = new ArrayList<String>();
-		Date date = new Date();
+		Date datepicker = new Date();
 		MessageDto message = 
 				MessageDto.getInstance(
-						loginUser.getId(), form.getSubject(), form.getText(), form.getCategory(), date);
+						loginUser.getId(), form.getSubject(), form.getText(), form.getCategory(), datepicker);
 		if (isValid(message, messages)) {
 			messageService.messageInsert(message);
 			return "redirect:/";

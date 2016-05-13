@@ -16,6 +16,14 @@
 <div class="user_name">
 	<c:out value="${ loginUser.name }" />
 </div>
+<c:if test="${ not empty errorMessages }">
+	<ul>
+		<c:forEach items="${ errorMessages }" var="message">
+			<li><span><c:out value="${message}" /></span></li>
+		</c:forEach>
+	</ul>
+	<c:remove var="errorMessages" scope="session" />
+</c:if>
 <table class="control">
 	<tr>
 		<th>名前</th>
@@ -25,8 +33,10 @@
 		<th>ユーザー</th>
 	</tr>
 	<c:forEach items="${ users }" var="user">
-		<tr>
-			<td><a href="settings?user_id=${ user.id }"><c:out value="${ user.name }" /></a></td>
+		<tr>	
+			<td>
+				<a href="../settings?user_id=${ user.id }"><c:out value="${ user.name }" /></a>
+			</td>
 			<td><c:out value="${ user.loginId }" /></td>
 			<td>
 				<c:forEach items="${ branches }" var="branch">
